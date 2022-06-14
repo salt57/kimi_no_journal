@@ -1,0 +1,11 @@
+version: '3'
+volumes:
+    logs:
+services:
+    backend:
+        build: ./backend
+        restart: always
+        ports: 
+            - "3001:3001"
+        volumes:
+            - /home/salt57/logs:/app/logs
