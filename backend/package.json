@@ -6,7 +6,6 @@
   "author": "salt57",
   "license": "MIT",
   "scripts": {
-    "prepare": "cd .. && husky install backend/.husky",
     "build": "rimraf dist && tsc",
     "lint": "eslint src --max-warnings 0 --fix --ext .ts",
     "start": "NODE_ENV=production node -r dotenv/config dist/index.js",
@@ -47,7 +46,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^8.0.1",
     "jest": "^28.1.1",
     "jest-environment-node": "^28.1.1",
     "lint-staged": "^13.0.1",
@@ -56,5 +54,6 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
