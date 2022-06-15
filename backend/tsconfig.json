@@ -11,9 +11,8 @@
     "skipLibCheck": true,
     "typeRoots": ["./typings", "node_modules/@types"],
     "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "lib": ["es2018", "esnext.asynciterable"]
   },
-  "include": [
-    "src/**/*.ts",
-  ],
+  "include": ["src/**/*.ts"],
 }
