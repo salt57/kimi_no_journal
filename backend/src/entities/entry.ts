@@ -30,13 +30,4 @@ export class entry {
   @prop({ required: true })
   password!: string;
 
-  static async comparePasswords(
-    this: ReturnModelType<typeof entry>,
-    entryname: string,
-    password: string
-  ) {
-    const entry = await this.findOne({ entryname }).exec();
-    if (!entry) return false;
-    return bcrypt.compare(password, entry.password);
-  }
 }
