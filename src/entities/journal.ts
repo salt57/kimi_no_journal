@@ -1,11 +1,16 @@
 import { ObjectType, Field } from "type-graphql";
 import { prop } from "@typegoose/typegoose";
 import { ObjectId } from "mongodb";
+import { Entry } from "./entry";
 
 @ObjectType()
-export class Entry {
+export class Journal {
   @Field()
   readonly _id!: ObjectId;
+
+  @prop({ required: true })
+  @Field()
+  title!: string;
 
   @prop()
   @Field(() => Date)
@@ -15,7 +20,7 @@ export class Entry {
   @Field(() => Date)
   updatedAt!: Date;
 
-  @prop({ required: true })
-  @Field()
-  content!: string;
+  @prop({ type: Entry, required: true, default: [] })
+  @Field(() => [Entry])
+  entries!: Entry[];
 }

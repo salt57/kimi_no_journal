@@ -14,6 +14,10 @@ export class RegisterInput {
   //contains atleast one number, one uppercase letter, one lowercase letter and one special character
   password!: string;
 
+  @Field()
+  @Length(4, 40)
+  journalTitle!: string;
+
   @Field(() => ObjectId, { nullable: true })
   partner?: ObjectId;
 }

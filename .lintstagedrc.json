@@ -1,4 +1,0 @@
-{
-  "gitDir": "../",
-  "src/**/*.ts": ["yarn build", "yarn lint"]
-}

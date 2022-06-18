@@ -2,6 +2,7 @@ import { ObjectType, Field } from "type-graphql";
 import { pre, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
+import { Journal } from "./journal";
 
 @pre<User>("save", async function () {
   if (this.isNew) this.password = await bcrypt.hash(this.password, 12);
@@ -24,11 +25,14 @@ export class User {
   username!: string;
 
   @prop({ ref: () => User })
-  @Field(() => ObjectId, { nullable: true })
   partner!: Ref<User>;
 
   @prop({ required: true })
   password!: string;
+
+  @prop({ ref: () => Journal })
+  @Field(() => Journal)
+  journal!: Ref<Journal>;
 
   static async comparePasswords(
     this: ReturnModelType<typeof User>,

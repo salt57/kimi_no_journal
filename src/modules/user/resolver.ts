@@ -1,11 +1,21 @@
-import { Resolver, Arg, Query, Mutation } from "type-graphql";
+import {
+  Resolver,
+  Arg,
+  Query,
+  Mutation,
+  Ctx,
+  UseMiddleware,
+} from "type-graphql";
 import { Service } from "typedi";
-import { ObjectId } from "mongodb";
 
 import { User } from "../../entities";
 import UserService from "./service";
 import { LoginInput, RegisterInput } from "./input";
 import { UserMongooseModel } from "./model";
+import { LoginResponse } from "./output";
+import { ContextType } from "../../bootstrap/loaders/apollo";
+import { createAccessToken, createRefreshToken } from "./helpers/jwtTokens";
+import { isAuth } from "../../middlewares/isAuth";
 
 /*
   IMPORTANT: Your business logic must be in the service!
@@ -16,9 +26,13 @@ import { UserMongooseModel } from "./model";
 export default class UserResolver {
   constructor(private readonly userService: UserService) {}
 
+  @UseMiddleware(isAuth)
   @Query(() => User)
-  async getUser(@Arg("id") id: ObjectId) {
-    const user = await this.userService.getById(id);
+  async getUser(@Ctx() { payload }: ContextType): Promise<User | null> {
+    if (!payload) {
+      throw new Error("You are not logged in");
+    }
+    const user = await this.userService.getByUsername(payload.username);
 
     return user;
   }
@@ -31,18 +45,24 @@ export default class UserResolver {
     return user;
   }
 
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => LoginResponse, { nullable: true })
   async loginUser(
-    @Arg("loginUserData") loginUserData: LoginInput
-  ): Promise<User | null> {
+    @Arg("loginUserData") loginUserData: LoginInput,
+    @Ctx() { res }: ContextType
+  ): Promise<LoginResponse | null> {
     if (
       !(await UserMongooseModel.comparePasswords(
         loginUserData.username,
         loginUserData.password
       ))
     ) {
-      return new Promise((resolve) => resolve(null));
+      throw new Error("Invalid username or password");
     }
-    return this.userService.getByUsername(loginUserData.username);
+    res.cookie("jid", createRefreshToken(loginUserData.username), {
+      httpOnly: true,
+    });
+    return {
+      accessToken: createAccessToken(loginUserData.username),
+    };
   }
 }

@@ -23,6 +23,11 @@ export interface Config {
     host: string;
     port: number;
   };
+  jwt: {
+    secret: string;
+    expiresIn: string;
+    refreshExpiresIn: string;
+  };
 }
 
 // All your secrets, keys go here
@@ -36,5 +41,10 @@ export const config: Config = {
   redis: {
     port: +env("REDIS_PORT"),
     host: env("REDIS_HOST"),
+  },
+  jwt: {
+    secret: env("JWT_SECRET"),
+    expiresIn: env("JWT_EXPIRES_IN"),
+    refreshExpiresIn: env("JWT_REFRESH_EXPIRES_IN"),
   },
 };
