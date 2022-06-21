@@ -2,7 +2,7 @@ import { getModelForClass } from "@typegoose/typegoose";
 import { ObjectId } from "mongodb";
 import { Service } from "typedi";
 import { Journal } from "../../entities/journal";
-import { CreateEntryInput } from "../entry/input";
+import { CreateEntryInput, EditEntryInput } from "../entry/input";
 import EntryModel from "../entry/model";
 import { EditJournalInput } from "./input";
 
@@ -23,6 +23,21 @@ export default class JournalModel {
   async create(data: { title: string }): Promise<Journal> {
     const journal = await JournalMongooseModel.create({ title: data.title });
 
+    return journal.save();
+  }
+
+  async editEntry(journalId: ObjectId, data: EditEntryInput): Promise<Journal> {
+    const journal = await JournalMongooseModel.findById(journalId);
+    if (!journal) {
+      throw new Error("Journal not found");
+    }
+    const entryIndex = journal.entries
+      .map((e) => e._id.toString())
+      .indexOf(data.id.toString());
+    if (entryIndex === -1) {
+      throw new Error("Entry not found");
+    }
+    journal.entries[entryIndex].content = data.content;
     return journal.save();
   }
 

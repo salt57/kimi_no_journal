@@ -12,7 +12,6 @@ export class CreateEntryInput {
 @InputType()
 export class EditEntryInput {
   @Field()
-  @IsMongoId()
   id!: ObjectId;
 
   @Field()
