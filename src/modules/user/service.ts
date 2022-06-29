@@ -25,4 +25,8 @@ export default class UserService {
 
     return newUser;
   }
+
+  public async revokeRefreshTokensForUser(_id: ObjectId): Promise<boolean> {
+    return this.userModel.revokeRefreshTokensForUser(_id);
+  }
 }

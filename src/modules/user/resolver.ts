@@ -14,7 +14,11 @@ import { LoginInput, RegisterInput } from "./input";
 import { UserMongooseModel } from "./model";
 import { LoginResponse } from "./output";
 import { ContextType } from "../../bootstrap/loaders/apollo";
-import { createAccessToken, createRefreshToken } from "./helpers/jwtTokens";
+import {
+  createAccessToken,
+  createRefreshToken,
+  verifyRefreshToken,
+} from "./helpers/jwtTokens";
 import { isAuth } from "../../middlewares/isAuth";
 
 /*
@@ -45,6 +49,43 @@ export default class UserResolver {
     return user;
   }
 
+  @UseMiddleware(isAuth)
+  @Mutation(() => Boolean)
+  async revokeRefreshTokensForUser(
+    @Ctx() { payload }: ContextType
+  ): Promise<boolean> {
+    if (!payload) {
+      throw new Error("You are not logged in");
+    }
+    const user = await this.userService.getByUsername(payload.username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return this.userService.revokeRefreshTokensForUser(user._id);
+  }
+
+  @Mutation(() => LoginResponse)
+  async regenAccessToken(
+    @Ctx() { req, res }: ContextType
+  ): Promise<LoginResponse> {
+    const jid = (req.cookies as { jid: string }).jid;
+    if (!jid) {
+      throw new Error("No refresh token cookie");
+    }
+    const { username, tokenVersion } = verifyRefreshToken(jid);
+    const user = await this.userService.getByUsername(username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    if (user.tokenVersion !== tokenVersion) {
+      throw new Error("Refresh token is invalid");
+    }
+    res.cookie("jid", createRefreshToken(user), { httpOnly: true });
+    return {
+      accessToken: createAccessToken(username),
+    };
+  }
+
   @Mutation(() => LoginResponse, { nullable: true })
   async loginUser(
     @Arg("loginUserData") loginUserData: LoginInput,
@@ -58,7 +99,11 @@ export default class UserResolver {
     ) {
       throw new Error("Invalid username or password");
     }
-    res.cookie("jid", createRefreshToken(loginUserData.username), {
+    const user = await this.userService.getByUsername(loginUserData.username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    res.cookie("jid", createRefreshToken(user), {
       httpOnly: true,
     });
     return {

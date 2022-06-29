@@ -1,4 +1,4 @@
-import { IsMongoId, Length } from "class-validator";
+import { Length } from "class-validator";
 import { ObjectId } from "mongodb";
 import { Field, InputType } from "type-graphql";
 

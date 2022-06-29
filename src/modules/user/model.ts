@@ -36,4 +36,12 @@ export default class UserModel {
 
     return user.save();
   }
+
+  async revokeRefreshTokensForUser(_id: ObjectId): Promise<boolean> {
+    const user = await UserMongooseModel.findById(_id);
+    if (!user) return Promise.resolve(false);
+    user.tokenVersion += 1;
+    await user.save();
+    return Promise.resolve(true);
+  }
 }

@@ -24,7 +24,8 @@ export interface Config {
     port: number;
   };
   jwt: {
-    secret: string;
+    accessSecret: string;
+    refreshSecret: string;
     expiresIn: string;
     refreshExpiresIn: string;
   };
@@ -43,7 +44,8 @@ export const config: Config = {
     host: env("REDIS_HOST"),
   },
   jwt: {
-    secret: env("JWT_SECRET"),
+    accessSecret: env("JWT_SECRET"),
+    refreshSecret: env("JWT_REFRESH_SECRET"),
     expiresIn: env("JWT_EXPIRES_IN"),
     refreshExpiresIn: env("JWT_REFRESH_EXPIRES_IN"),
   },

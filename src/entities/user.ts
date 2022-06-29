@@ -1,4 +1,4 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, Int } from "type-graphql";
 import { pre, prop, Ref, ReturnModelType } from "@typegoose/typegoose";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
@@ -29,6 +29,10 @@ export class User {
 
   @prop({ required: true })
   password!: string;
+
+  @prop({ default: 0 })
+  @Field(() => Int)
+  tokenVersion!: number;
 
   @prop({ ref: () => Journal })
   @Field(() => Journal)
