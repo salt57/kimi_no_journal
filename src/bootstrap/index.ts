@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import loaders from "./loaders";
 import { Config } from "../config";
+import { switchJournalCron } from "./loaders/cronJobs";
 
 export default async (config: Config) => {
   const app = express();
@@ -22,9 +23,10 @@ export default async (config: Config) => {
     },
   });
 
-  app.listen({ port: config.port }, () =>
+  app.listen({ port: config.port }, () => {
     console.log(
       `🚀 Server ready at http://localhost:${config.port}${config.graphqlPath}`
-    )
-  );
+    );
+    switchJournalCron.start();
+  });
 };

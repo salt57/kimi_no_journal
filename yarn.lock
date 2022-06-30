@@ -1537,15 +1537,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/helmet@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@types/helmet@npm:4.0.0"
-  dependencies:
-    helmet: "*"
-  checksum: ded60d8d9960edbae4d10603511dca9b9c50a9937f49e0d2b14bc096302e85a038acd443889a132dab60bc950bfd0e47337bdca485d75bbb7b6224f74fc50ab7
-  languageName: node
-  linkType: hard
-
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.4
   resolution: "@types/istanbul-lib-coverage@npm:2.0.4"
@@ -1655,6 +1646,13 @@ __metadata:
     "@types/bson": "*"
     "@types/node": "*"
   checksum: e5397ada2ed728997f7c3f5424e8c28f682a635488be967c9c18a5de27b1641cf28bb42bc12026ac6d475c457a880e27097e13c8120350ba13219f4ccc030656
+  languageName: node
+  linkType: hard
+
+"@types/node-cron@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@types/node-cron@npm:3.0.1"
+  checksum: c93887daef8064b92122c3baf5a3f058bafb70a600f432665dd2684ef8539f7796fd731b3b35b54daad7faef88f87b56fc3236b8e69ce021a364ba2e8f30e51e
   languageName: node
   linkType: hard
 
@@ -2405,11 +2403,11 @@ __metadata:
     "@types/cookie-parser": ^1.4.3
     "@types/cors": ^2.8.12
     "@types/express": ^4.17.13
-    "@types/helmet": ^4.0.0
     "@types/jest": ^28.1.1
     "@types/js-yaml": ^4.0.5
     "@types/jsonwebtoken": ^8.5.8
     "@types/node": ^17.0.42
+    "@types/node-cron": ^3.0.1
     "@typescript-eslint/eslint-plugin": ^5.28.0
     "@typescript-eslint/parser": ^5.28.0
     apollo-server-core: ^3.8.2
@@ -2435,6 +2433,7 @@ __metadata:
     lint-staged: ^13.0.1
     mongodb: ^4.7.0
     mongoose: ^6.3.8
+    node-cron: ^3.0.1
     nodemon: ^2.0.16
     pinst: ^3.0.0
     prettier: ^2.7.0
@@ -4601,7 +4600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:*, helmet@npm:^5.1.0":
+"helmet@npm:^5.1.0":
   version: 5.1.0
   resolution: "helmet@npm:5.1.0"
   checksum: 076958ed8262b72e77276f9e7e9a5e3628b3a44bf39a64a856e919fd3d5a887d3a29b58c1729dfdb0645afd440e763d29a871e866f1fa658f91a718da82ca052
@@ -6618,6 +6617,13 @@ __metadata:
     debug: ^4.3.4
     tslib: ^2.4.0
   checksum: 638130552600d9ac379399938148ab09285e03878a7eaeddaee6f5c6a4443656947e70cdef9f4344d654fa41eaa732cb6c3a9d323f324d6017e34238a8c4fb2b
+  languageName: node
+  linkType: hard
+
+"node-cron@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "node-cron@npm:3.0.1"
+  checksum: 98636a3d4373d48b5c7f5b922c93d22ca81a4bd38284f264812c7b88f06c995eb9ccde34ee2753cbec9bf5b77bd220c817c18ca82de504e3e324df9af6983b5d
   languageName: node
   linkType: hard
 

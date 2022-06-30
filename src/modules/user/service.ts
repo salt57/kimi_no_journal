@@ -29,4 +29,36 @@ export default class UserService {
   public async revokeRefreshTokensForUser(_id: ObjectId): Promise<boolean> {
     return this.userModel.revokeRefreshTokensForUser(_id);
   }
+
+  public async sendFriendRequest(
+    userId: ObjectId,
+    friendId: ObjectId
+  ): Promise<boolean> {
+    return this.userModel.sendFriendRequest(userId, friendId);
+  }
+
+  public async acceptFriendRequest(
+    userId: ObjectId,
+    friendId: ObjectId
+  ): Promise<boolean> {
+    return this.userModel.acceptFriendRequest(userId, friendId);
+  }
+
+  public async rejectFriendRequest(
+    userId: ObjectId,
+    friendId: ObjectId
+  ): Promise<boolean> {
+    return this.userModel.rejectFriendRequest(userId, friendId);
+  }
+
+  public async choosePartner(
+    userId: ObjectId,
+    partnerId: ObjectId
+  ): Promise<boolean> {
+    return this.userModel.choosePartner(userId, partnerId);
+  }
+
+  public async switchJournal(username: string) {
+    return this.userModel.switchJournal(username);
+  }
 }

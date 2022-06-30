@@ -24,8 +24,9 @@ export class User {
   @Field()
   username!: string;
 
-  @prop({ ref: () => User })
-  partner!: Ref<User>;
+  @prop()
+  @Field(() => String)
+  partner!: string;
 
   @prop({ required: true })
   password!: string;
@@ -37,6 +38,15 @@ export class User {
   @prop({ ref: () => Journal })
   @Field(() => Journal)
   journal!: Ref<Journal>;
+
+  //friend requests
+  @prop({ default: [], type: () => [String] })
+  @Field(() => [String])
+  friendRequests!: string[];
+
+  @prop({ default: [], type: () => [String] })
+  @Field(() => [String])
+  friends!: string[];
 
   static async comparePasswords(
     this: ReturnModelType<typeof User>,

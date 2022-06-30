@@ -20,6 +20,7 @@ import {
   verifyRefreshToken,
 } from "./helpers/jwtTokens";
 import { isAuth } from "../../middlewares/isAuth";
+import { Journal } from "../../entities/journal";
 
 /*
   IMPORTANT: Your business logic must be in the service!
@@ -84,6 +85,105 @@ export default class UserResolver {
     return {
       accessToken: createAccessToken(username),
     };
+  }
+
+  //send friend request
+  @UseMiddleware(isAuth)
+  @Mutation(() => Boolean)
+  async sendFriendRequest(
+    @Arg("username") username: string,
+    @Ctx() { payload }: ContextType
+  ): Promise<boolean> {
+    if (!payload) {
+      throw new Error("You are not logged in");
+    }
+    const user = await this.userService.getByUsername(payload.username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const friend = await this.userService.getByUsername(username);
+    if (!friend) {
+      throw new Error("User to send request to not found");
+    }
+    return this.userService.sendFriendRequest(user._id, friend._id);
+  }
+
+  //accept friend request
+  @UseMiddleware(isAuth)
+  @Mutation(() => Boolean)
+  async acceptFriendRequest(
+    @Arg("username") username: string,
+    @Ctx() { payload }: ContextType
+  ): Promise<boolean> {
+    if (!payload) {
+      throw new Error("You are not logged in");
+    }
+    const user = await this.userService.getByUsername(payload.username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const friend = await this.userService.getByUsername(username);
+    if (!friend) {
+      throw new Error("User to send request to not found");
+    }
+    return this.userService.acceptFriendRequest(user._id, friend._id);
+  }
+
+  @UseMiddleware(isAuth)
+  @Mutation(() => Boolean)
+  async rejectFriendRequest(
+    @Arg("username") username: string,
+    @Ctx() { payload }: ContextType
+  ): Promise<boolean> {
+    if (!payload) {
+      throw new Error("You are not logged in");
+    }
+    const user = await this.userService.getByUsername(payload.username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const friend = await this.userService.getByUsername(username);
+    if (!friend) {
+      throw new Error("User to send request to not found");
+    }
+    return this.userService.rejectFriendRequest(user._id, friend._id);
+  }
+
+  // choose partner
+  @UseMiddleware(isAuth)
+  @Mutation(() => Boolean)
+  async choosePartner(
+    @Arg("username") username: string,
+    @Ctx() { payload }: ContextType
+  ): Promise<boolean> {
+    if (!payload) {
+      throw new Error("You are not logged in");
+    }
+    const user = await this.userService.getByUsername(payload.username);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const friend = await this.userService.getByUsername(username);
+    if (!friend) {
+      throw new Error("User to send request to not found");
+    }
+    if (
+      !user.friends.includes(friend.username) ||
+      !friend.friends.includes(user.username)
+    ) {
+      throw new Error("You are not friends");
+    }
+    return this.userService.choosePartner(user._id, friend._id);
+  }
+
+  //switch journals
+  @UseMiddleware(isAuth)
+  @Mutation(() => Journal)
+  async switchJournal(@Ctx() { payload }: ContextType): Promise<Journal> {
+    if (!payload) {
+      throw new Error("You are not logged in");
+    }
+    return this.userService.switchJournal(payload.username);
   }
 
   @Mutation(() => LoginResponse, { nullable: true })

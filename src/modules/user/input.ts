@@ -6,6 +6,7 @@ import { IsUsernameAlreadyExist } from "./helpers/isUsernameAlreadyExist";
 @InputType()
 export class RegisterInput {
   @Field()
+  @Length(1, 255)
   @IsUsernameAlreadyExist({ message: "email already in use" })
   username!: string;
 
@@ -31,4 +32,11 @@ export class LoginInput {
   @Field()
   @Length(6, 100)
   password!: string;
+}
+
+@InputType()
+export class FriendRequestInput {
+  @Field()
+  @Length(1, 255)
+  username!: string;
 }
